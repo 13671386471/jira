@@ -8,8 +8,14 @@ export const SearchPanel = () => {
     const [list, setList] = useState([]);// 列表数据
 
     useEffect(() => {
-        fetch().then(res => res.json()).then(list => {
-            setList(list);
+        fetch('/user')
+        .then(async res => {
+            console.log('res:', res);
+            if(res.ok){
+                // console.log('res:ok', res.json());
+                // setList(await res.json())
+            }
+            
         })
     }, [param])// param发生变化时候请求列表数据
   return (
