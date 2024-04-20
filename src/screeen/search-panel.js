@@ -1,23 +1,6 @@
 import { useEffect, useState } from 'react';
-export const SearchPanel = () => {
-    const [param ,setParam] = useState({
-        name: '',
-        personId: ''
-    })
-    const [personOptions, setPersonOptions] = useState([]);
-    const [list, setList] = useState([]);// 列表数据
-
-    useEffect(() => {
-        fetch('/user')
-        .then(async res => {
-            console.log('res:', res);
-            if(res.ok){
-                // console.log('res:ok', res.json());
-                // setList(await res.json())
-            }
-            
-        })
-    }, [param])// param发生变化时候请求列表数据
+export const SearchPanel = ({param, setParam, users}) => {
+    
   return (
     <div>
         <form>
@@ -41,7 +24,7 @@ export const SearchPanel = () => {
             }}>
                 <option value="">负责人</option>
                 {
-                    personOptions.map(person => {
+                    users.map(person => {
                         return <option 
                                 key={person.id} 
                                 value={person.id}
