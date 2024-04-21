@@ -1,8 +1,8 @@
 
 // 在真实的应用中，如果使用firebase 第三方auth服务的话，本文件不用自己开发，调用第三方的JDK就行
-
-const apiUrl = process.env.REACT_APP_API_URL;
 import { User } from "screeen/project-list/search-panel"
+const apiUrl = process.env.REACT_APP_API_URL;
+
 
 const localStorageKey = '__auth_provider__token__'
 
@@ -25,7 +25,7 @@ export const login = (data: {username: string, password: string}) => {
         if (res.ok) {
             return handleUserResponse(await res.json())
         } else {
-
+            return Promise.reject(data)
         }
     })
 }
@@ -41,6 +41,7 @@ export const register = (data: {username: string, password: string}) => {
         if (res.ok) {
             return handleUserResponse(await res.json())
         } else {
+            return Promise.reject(data)
         }
     })
 }

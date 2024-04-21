@@ -5,13 +5,17 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 // import {loadDevTools} from 'imooc-jira-tool';
 import { DevTools, loadServer } from "jira-dev-tool";
+import { AppProviders } from "context";
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement,
 );
 loadServer(() => root.render(
   <React.StrictMode>
     <DevTools />
-    <App />
+    <AppProviders>
+      <App />
+    </AppProviders>
+   
   </React.StrictMode>,
 ))
 
