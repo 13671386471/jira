@@ -1,6 +1,17 @@
+import { User } from "./search-panel";
+interface Project{
+    id: string,
+    name: string,
+    personId: string,
+    organization: string,
+    pin: boolean
+}
+interface ProjectListProp{
+    list: Project[],
+    users: User[]
+}
 
-
-export const ProjectList = ({list, users}) => {
+export const ProjectList = ({list, users}: ProjectListProp) => {
     return (
         <div>
             <table>
