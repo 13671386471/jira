@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import qs from 'qs';
 import { SearchPanel } from "./search-panel"
-import { ProjectList } from "./project-list"
+import { ProjectList } from "./list"
 import { clearnObject, useMount, useDebounce } from "utils";
 const apiUrl = process.env.REACT_APP_API_URL;
 console.log('apiUrl:::', apiUrl);
