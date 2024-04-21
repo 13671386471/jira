@@ -3,13 +3,19 @@ import logo from "./logo.svg";
 import "./App.css";
 import { ProjectScreen } from "screeen/project-list";
 import { TryUserArray } from "screeen/try-user-array";
-import { Login } from "screeen/login";
+import { UnAutnhenticatedApp } from "unauthenticated-app";
+import { useAuth } from "context/auth-context";
+import { AuthenticatedApp } from "authenticated-app";
+
+
 function App() {
+  const { user } = useAuth()
   return ( 
     <div className="App">
-      {/* <ProjectScreen />
-      <TryUserArray /> */}
-      <Login />
+      
+      {
+        user? <AuthenticatedApp /> : <UnAutnhenticatedApp />
+      }
     </div>
   );
 }
