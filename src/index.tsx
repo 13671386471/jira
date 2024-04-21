@@ -3,13 +3,14 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import {loadDevTools} from 'imooc-jira-tool';
-
+// import {loadDevTools} from 'imooc-jira-tool';
+import { DevTools, loadServer } from "jira-dev-tool";
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement,
 );
-loadDevTools(() => root.render(
+loadServer(() => root.render(
   <React.StrictMode>
+    <DevTools />
     <App />
   </React.StrictMode>,
 ))
