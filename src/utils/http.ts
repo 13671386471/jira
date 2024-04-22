@@ -67,6 +67,12 @@ const per: Partial<Person> = {age: 12}
 const shenmiren: Omit<Person, 'name'> = {age: 12}
 const shenmiren2: Omit<Person, 'name'|'age'> = {123: '123'}
 
+// keyof 是把一个对象类型的键值取出来，然后把他们联合在一起组成联合类型
+type perKey = keyof Person;//  'name' | 'age'
+type PersonOnlyName = Pick<Person, 'name'>;// Pick操作的作用是取出【对象类型】的某个属性
+type Age = Exclude<perKey, 'name'>// Exclude操作的作用是排除掉【联合类型】中的某个类型
+
+// ts的作用就是一个类型约束系统
 
 // 联合类型
 let param: number | string;
