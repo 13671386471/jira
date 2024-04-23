@@ -1,32 +1,45 @@
 
 
+import { Button, Form, Input } from 'antd';
 import { useAuth } from 'context/auth-context';
 import React, {useState} from 'react'
 const apiUrl = process.env.REACT_APP_API_URL;
 export const RegisterScreen = () => {
     const {register, user} = useAuth();
     
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-        const username = (e.currentTarget.elements[0] as HTMLInputElement).value
-        const password = (e.currentTarget.elements[1] as HTMLInputElement).value
-        console.log(username, password)
-        register({username, password});
+    const handleSubmit = (formValues: {username: string, password: string}) => {
+        console.log('handleSubmit:', formValues)
+        register(formValues);
     }
-
     return (
         <div>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label htmlFor="username">用户名</label>
-                    <input type="text" id='username'/>
-                </div>
-                <div>
-                    <label htmlFor="password">密码</label>
-                    <input type="password" id='password'/>
-                </div>
-                <button type='submit'>注册</button>
-            </form>
+            <Form onFinish={handleSubmit}>
+                <Form.Item
+                    name="username"
+                    label="用户名"
+                    rules={[
+                        {
+                            required: true,
+                            message: '请输入用户名',
+                        },
+                    ]}
+                >
+                    <Input type="text" id='username'/>
+                </Form.Item>
+                <Form.Item
+                    name="password"
+                    label="密码"
+                    rules={[
+                        {
+                            required: true,
+                            message: '请输入密码',
+                        },
+                    ]}
+                >
+                    <Input type="password" id='password'/>
+                </Form.Item>
+                <Button  htmlType='submit' type='primary' >注册</Button>
+            </Form>
         </div>
     )
 }
