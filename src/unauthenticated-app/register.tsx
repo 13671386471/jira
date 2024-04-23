@@ -38,7 +38,9 @@ export const RegisterScreen = () => {
                 >
                     <Input type="password" id='password'/>
                 </Form.Item>
-                <Button  htmlType='submit' type='primary' >注册</Button>
+                <Form.Item>
+                    <Button  htmlType='submit' type='primary' >注册</Button>
+                </Form.Item>
             </Form>
         </div>
     )

@@ -14,13 +14,18 @@ export const Login = () => {
 
     return (
         <div>
-            <Form onFinish={handleSubmit}>
+            <Form 
+                layout='horizontal'
+                onFinish={handleSubmit}
+            >
                 <Form.Item
                     name='username'
-                    label='姓名'
+                    label='用户名'
                     rules={[
                         {required: true, message: '请输入用户名'}
                     ]}
+                    // labelCol={{ flex: '16' }}
+                    // wrapperCol={{ flex: 2 }}
                 >
                     <Input type="text" id='username'/>
                 </Form.Item>
@@ -30,6 +35,8 @@ export const Login = () => {
                     rules={[
                         {required: true, message: '请输入密码'}
                     ]}
+                    // labelCol={{ flex: '16' }}
+                    // wrapperCol={{ flex: 2 }}
                 >
                     <Input type="password" id='password'/>
                 </Form.Item>
