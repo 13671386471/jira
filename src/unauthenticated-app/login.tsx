@@ -3,6 +3,7 @@
 import { useAuth } from 'context/auth-context';
 import React, {useState} from 'react'
 import { Button, Form, Input } from 'antd';
+import { LongButton } from 'unauthenticated-app';
 const apiUrl = process.env.REACT_APP_API_URL;
 export const Login = () => {
     const {login, user} = useAuth();
@@ -27,7 +28,7 @@ export const Login = () => {
                     // labelCol={{ flex: '16' }}
                     // wrapperCol={{ flex: 2 }}
                 >
-                    <Input type="text" id='username'/>
+                    <Input type="text" id='username' placeholder='用户名'/>
                 </Form.Item>
                 <Form.Item
                     name={'password'}
@@ -38,10 +39,10 @@ export const Login = () => {
                     // labelCol={{ flex: '16' }}
                     // wrapperCol={{ flex: 2 }}
                 >
-                    <Input type="password" id='password'/>
+                    <Input type="password" id='password' placeholder='密码'/>
                 </Form.Item>
                 <Form.Item>
-                    <Button type='primary' htmlType='submit'>登陆</Button>
+                    <LongButton type='primary' htmlType='submit'>登陆</LongButton>
                 </Form.Item>
             </Form>
         </div>
