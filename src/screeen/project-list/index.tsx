@@ -48,9 +48,7 @@ export const ProjectScreen = () => {
     })
     return (
         <div>
-            <button onClick={logout}>
-                退出
-            </button>
+            
             <SearchPanel
                 param={param}
                 setParam={setParam}
