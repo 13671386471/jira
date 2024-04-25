@@ -47,6 +47,8 @@ export const http = (
     })
 }
 // 想要在一个方法中使用hook，那么这个方法也必须是一个hook，所以要用hook再包裹一层http
+// TODO? 这里为什么要再包装一层呢？应为要通过useAuth的hook获取user信息，所以必须要在一个hook中调用
+// 所以要再用hook包裹一层
 export const useHttp= () => {
     const {user} = useAuth();
     // return ([endpoint, config]: [string, HttpConfig]) => http(endpoint, config)
