@@ -1,10 +1,14 @@
 
 import React, {useEffect} from 'react';
-import { Button } from 'antd';
+import { Button, Dropdown, Menu } from 'antd';
+import type { MenuProps } from 'antd';
+import { DownOutlined, SmileOutlined } from '@ant-design/icons';
 import { ProjectScreen } from 'screeen/project-list';
 import { useAuth } from 'context/auth-context';
 import styled from '@emotion/styled';
 import { Row } from 'components/lib';
+// import softLogo from 'assets/software-logo.svg';
+import { ReactComponent as SoftwareLogo } from 'assets/software-logo.svg';
 
 
 /**
@@ -18,20 +22,40 @@ import { Row } from 'components/lib';
  * 从布局出发，用grid
  *
  */
+
 export const AuthenticatedApp = () => {
-    const {logout} = useAuth();
+    const {logout, user} = useAuth();
+
+    const items: MenuProps['items'] = [
+        {
+          key: '1',
+          label: (
+            <a onClick={logout}>
+              登出
+            </a>
+          ),
+          icon: <SmileOutlined />,
+        }
+      ];
     return (
         <Container>
             <PageHeader between={true}>
                 <PageHeaderLeft gap={3}>
-                    <span>logo</span>
+                    {/* <img src={softLogo} /> 用svg格式展示图片 */}
+                    <SoftwareLogo width={'18rem'} color={'rgb(38, 132, 255)'}/>
                     <h1>项目列表</h1>
                     <h1>用户</h1>
                 </PageHeaderLeft>
                 <PageHeaderRight>
-                    <Button onClick={logout}>
-                        登出
-                    </Button>
+                    <Dropdown 
+                        menu={{items}}
+                    >
+                        <a>
+                            hi {user?.name}
+                            <DownOutlined />
+                        </a>
+                        
+                    </Dropdown>
                 </PageHeaderRight>
                
             </PageHeader>
@@ -47,7 +71,9 @@ const Container = styled.div`
     grid-template-rows: 6rem 1fr;// 意思是第一行占6rem，第二行占1fr(减去第一行的高度后沾满)
     height: 100vh;
 `
-const PageHeader = styled(Row)``
+const PageHeader = styled(Row)`
+    padding: 3.2rem;
+`
 
 const PageHeaderLeft = styled(Row)``
 const PageHeaderRight = styled.div`

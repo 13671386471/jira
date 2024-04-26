@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import qs from 'qs';
+import styled from '@emotion/styled'
 import { SearchPanel } from "./search-panel"
 import { ProjectList } from "./list"
 import { clearnObject, useMount, useDebounce } from "utils";
@@ -47,8 +48,8 @@ export const ProjectScreen = () => {
         // })
     })
     return (
-        <div>
-            
+        <Container>
+            <h1>项目列表</h1>
             <SearchPanel
                 param={param}
                 setParam={setParam}
@@ -58,6 +59,10 @@ export const ProjectScreen = () => {
                 list={list}
                 users={users}
             />
-        </div>
+        </Container>
     )
 }
+
+const Container = styled.div`
+    padding: 3.2rem;
+`

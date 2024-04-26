@@ -1,5 +1,4 @@
-/** @jsx jsx */
-import { jsx } from "@emotion/react";
+import { css } from "@emotion/css";
 import React, { useEffect, useState } from 'react';
 import { Input, Select,Form } from 'antd';
 
@@ -30,10 +29,16 @@ interface SearchPanelProps {
 }
 
 export const SearchPanel = ({param, setParam, users}: SearchPanelProps) => {
-    
+
+
   return (
     // 加上layout='inline'后Form.Item在一行中展示，否则是垂直展示
-    <Form layout='inline' css={{marginBottom: '2rem'}}>
+    <Form
+        className={css`
+            margin-bottom: 2rem;
+        `} 
+        layout='inline' 
+    >
         <Form.Item>
             <Input
                 type="text"
