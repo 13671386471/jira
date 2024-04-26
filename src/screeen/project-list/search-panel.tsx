@@ -1,5 +1,8 @@
-import { Input, Select } from 'antd';
-import { useEffect, useState } from 'react';
+/** @jsx jsx */
+import { jsx } from "@emotion/react";
+import React, { useEffect, useState } from 'react';
+import { Input, Select,Form } from 'antd';
+
 export interface User{
     id: string;
     name: string;
@@ -29,8 +32,9 @@ interface SearchPanelProps {
 export const SearchPanel = ({param, setParam, users}: SearchPanelProps) => {
     
   return (
-    <div>
-        <form>
+    // 加上layout='inline'后Form.Item在一行中展示，否则是垂直展示
+    <Form layout='inline' css={{marginBottom: '2rem'}}>
+        <Form.Item>
             <Input
                 type="text"
                 className="form-control search-input"
@@ -43,6 +47,8 @@ export const SearchPanel = ({param, setParam, users}: SearchPanelProps) => {
                     })
                 }}
             />
+        </Form.Item>
+        <Form.Item>
             <Select value={param.personId} onChange={(val) => {
                 setParam({
                     ...param,
@@ -61,9 +67,8 @@ export const SearchPanel = ({param, setParam, users}: SearchPanelProps) => {
                     })
                 }
             </Select>
-        </form>
-        
-    </div>
+        </Form.Item>
+    </Form>
     
   );
 };
