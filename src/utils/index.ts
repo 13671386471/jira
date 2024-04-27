@@ -1,23 +1,28 @@
 import { useState, useEffect } from "react";
 // 函数中最好不修改传进来的参数对象
-export const clearnObject = (obj: object) => {
-    const newObj = {};
+//object 类型包含的情况比较多，不仅仅有所理解键值对对象；函数、数组、正则表达式等都是对象
+// let a: object;
+// a = {name: 'lisi'};
+// a = ['a', 'b'];
+// a = () => {};
+// a = new RegExp('');
+// let b = {...a}// 这时候对a进行结构的话只会得到一个空对象
+
+// 函数中，如果参数是对象，最好使用unknown类型，因为unknown类型可以接受任何类型，但是不能进行任何操作
+                            // 描述 键是字符串类型，值是unknown类型
+export const clearnObject = (obj: {[key: string]: unknown}) => {
+    const newObj: {[key: string]: unknown} = {};
     Object.keys(obj).forEach(key => {
-        // @ts-ignore
+
         if (obj[key] && typeof obj[key] === 'object') {
-            // @ts-ignore
-            clearnObject(obj[key])
+            clearnObject(obj[key] as {[key: string]: unknown});
         } else if (
-            // @ts-ignore
             obj[key]!='' && 
-            // @ts-ignore
             obj[key]!=undefined && 
-            // @ts-ignore
             obj[key]!=null && 
-            // @ts-ignore
             typeof obj[key] !== 'function'
         ) {
-            // @ts-ignore
+            
             newObj[key] = obj[key]
         }
     })
@@ -29,6 +34,8 @@ export const useMount = (func: () => void)=> {
     useEffect(() => {
         func();
     }, [])
+    // 如果把函数传进去，每次重新渲染都会执行，所以要传一个空数组
+    // 
 }
 
 export const useDebounce = <T>(value: T, delay?: number) => {

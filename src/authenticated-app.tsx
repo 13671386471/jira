@@ -30,9 +30,9 @@ export const AuthenticatedApp = () => {
         {
           key: '1',
           label: (
-            <a onClick={logout}>
+            <Button type="link" onClick={logout}>
               登出
-            </a>
+            </Button>
           ),
           icon: <SmileOutlined />,
         }
@@ -50,10 +50,10 @@ export const AuthenticatedApp = () => {
                     <Dropdown 
                         menu={{items}}
                     >
-                        <a>
-                            hi {user?.name}
+                        <Button type="link">
+                            hi~ {user?.name}
                             <DownOutlined />
-                        </a>
+                        </Button>
                         
                     </Dropdown>
                 </PageHeaderRight>
