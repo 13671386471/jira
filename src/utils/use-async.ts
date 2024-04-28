@@ -12,8 +12,12 @@ const defaultState: State<null> = {
     data: null,
     error: null
 }
+const defaultConfig ={
+    throwOnError: false
+}
 
-export const useAsync = <D>(initialState?: State<D>) => {
+export const useAsync = <D>(initialState?: State<D>, initConfig?: typeof defaultConfig) => {
+    const config = {...defaultConfig, ...initConfig}
     const [state, setState] = useState<State<D>>({
         ...defaultState,
         ...initialState
@@ -37,8 +41,14 @@ export const useAsync = <D>(initialState?: State<D>) => {
             setData(data)
             return data
         }).catch(error => {
+            // catch会消化异常，如果不主动抛出，外面是接收不到异常的，得用return Promise.reject(error)
+            // 但是其他情况有需要错误对象，所以根据参数决定返回
             setError(error)
-            return Promise.reject(error)
+            if(config.throwOnError){
+                return Promise.reject(error)
+            }else {
+                return error;
+            }
         })
    }
 

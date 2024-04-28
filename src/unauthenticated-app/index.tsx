@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button } from 'antd';
+import { Button, Typography } from 'antd';
 import { RegisterScreen } from './register';
 import { Login } from './login';
 import { Card, Divider } from 'antd';
@@ -10,6 +10,8 @@ import right from '../assets/right.svg';
 
 export const UnAutnhenticatedApp = () => {
     const [isRegister, setIsRegister] = useState(false);
+    const [error, setError] = useState<Error | null>(null);
+
     return (
         <Wrapper>
             <Header />
@@ -21,10 +23,16 @@ export const UnAutnhenticatedApp = () => {
                     }
                 </Title>
                 {
+                    error? 
+                    <Typography.Text type='danger'>{error.message}</Typography.Text>
+                    :
+                    null
+                }
+                {
                     isRegister ?
-                        <RegisterScreen />
+                        <RegisterScreen onError={setError} />
                         :
-                        <Login />
+                        <Login onError={setError} />
                 }
                 <Divider />
                 <a onClick={() => setIsRegister(!isRegister)}>
