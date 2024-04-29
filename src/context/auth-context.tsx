@@ -4,6 +4,8 @@ import {User} from 'screeen/project-list/search-panel';
 import * as auth from 'auth-provider';
 import {http} from 'utils/http';
 import { useMount } from 'utils';
+import { useAsync } from 'utils/use-async';
+import { FullPageLoading, FullPageErrorFallback } from 'components/lib';
 
 interface AuthForm {
     username: string;
@@ -33,13 +35,22 @@ const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 AuthContext.displayName = 'AuthContext';
 
 export const AuthProvider = ({children}: {children: React.ReactNode}) => {
-    const [user, setUse]= useState<User | null>(null);
+    // const [user, setUse]= useState<User | null>(null);
+    const {run, isIdle,isLoading, isError, setData: setUse, data: user, error} = useAsync<User | null>();
+
     const login = (form: AuthForm) => auth.login(form).then(user => setUse(user));
     const register = (form: AuthForm) => auth.register(form).then(setUse);// 上面(user => setUse(user))的简写
     const logout = () => auth.logout().then(() => setUse(null));// 因为auth.logout()是async 函数，返回的是Promise<void>，所以这里需要用then()
     useMount(() => {
-        bootstrapUser().then(user => setUse(user));
+        // bootstrapUser().then(user => setUse(user));
+        run(bootstrapUser());
     })
+    if(isIdle || isLoading){
+        return <FullPageLoading />;
+    }
+    if(isError){
+        return <FullPageErrorFallback error={error} />;
+    }
     return <AuthContext.Provider value={{user, login, register, logout}}>
         {children}
     </AuthContext.Provider>
