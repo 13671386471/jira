@@ -6,16 +6,20 @@ import { TryUserArray } from "screeen/try-user-array";
 import { UnAutnhenticatedApp } from "unauthenticated-app";
 import { useAuth } from "context/auth-context";
 import { AuthenticatedApp } from "authenticated-app";
+import { ErrorBoundary } from "components/array-boundary";
+import { FullPageErrorFallback } from "components/lib";
 
 
 function App() {
   const { user } = useAuth()
   return ( 
     <div className="App">
+      <ErrorBoundary fallbackRender={FullPageErrorFallback}>
+        {
+          user? <AuthenticatedApp /> : <UnAutnhenticatedApp />
+        }
+      </ErrorBoundary>
       
-      {
-        user? <AuthenticatedApp /> : <UnAutnhenticatedApp />
-      }
     </div>
   );
 }

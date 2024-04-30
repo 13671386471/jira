@@ -9,6 +9,7 @@ import styled from '@emotion/styled';
 import { Row } from 'components/lib';
 // import softLogo from 'assets/software-logo.svg';
 import { ReactComponent as SoftwareLogo } from 'assets/software-logo.svg';
+import { partialMatchKey } from 'react-query/types/core/utils';
 
 
 /**
@@ -37,8 +38,10 @@ export const AuthenticatedApp = () => {
           icon: <SmileOutlined />,
         }
       ];
+    const params: any = null;
     return (
         <Container>
+            {params.name}
             <PageHeader between={true}>
                 <PageHeaderLeft gap={3}>
                     {/* <img src={softLogo} /> 用svg格式展示图片 */}
