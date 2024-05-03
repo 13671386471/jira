@@ -1,5 +1,7 @@
 import { Table, TableProps } from "antd";
 import dayjs from "dayjs";
+//  
+import { Link } from "react-router-dom";
 import { User } from "./search-panel";
 export interface Project{
     id: string,
@@ -21,7 +23,12 @@ export const ProjectList = ({users, ...tableProps}: ProjectListProp) => {
             {
                 title: '名称',
                 dataIndex: 'name',
-                sorter: (a, b) => a.name.localeCompare(b.name)
+                sorter: (a, b) => a.name.localeCompare(b.name),
+                render: (text, record, index) => {
+                    console.log('render::', text, record, index, tableProps);
+                    // <Link to={`/projects/${record.id}`}>查看详情</Link>
+                    return <Link to={`/projects/${record.id}`}>{text}</Link>
+                }
             },
             {
                 title: '部门',

@@ -3,13 +3,17 @@ import React, {useEffect} from 'react';
 import { Button, Dropdown, Menu } from 'antd';
 import type { MenuProps } from 'antd';
 import { DownOutlined, SmileOutlined } from '@ant-design/icons';
-import { ProjectScreen } from 'screeen/project-list';
+import { Route, Routes, Navigate } from 'react-router';
+import { BrowserRouter as Router } from 'react-router-dom';
+
+import { ProjectScreenList } from 'screeen/project-list';
 import { useAuth } from 'context/auth-context';
 import styled from '@emotion/styled';
 import { Row } from 'components/lib';
 // import softLogo from 'assets/software-logo.svg';
 import { ReactComponent as SoftwareLogo } from 'assets/software-logo.svg';
 import { partialMatchKey } from 'react-query/types/core/utils';
+import { ProjectScreen } from 'screeen/project';
 
 
 /**
@@ -25,8 +29,28 @@ import { partialMatchKey } from 'react-query/types/core/utils';
  */
 
 export const AuthenticatedApp = () => {
-    const {logout, user} = useAuth();
+    return (
+        <Container>
+            <PageHeaderCom />
+            <Main>
+                {/* <ProjectScreenList /> */}
 
+                <Router>
+                    <Routes>
+                        {/* <Route path={'/projects'} element={<Navigate to={'/projects/list'} />} /> */}{/**默认写法*/}
+                        <Route path={'/projects'} element={<ProjectScreenList />} />
+                        <Route path={'/projects/:projectId/*'} element={<ProjectScreen />} />
+                        {/* <Navigate to={'/projects'} /> */}
+                    </Routes>
+                </Router>
+            </Main>
+            
+        </Container>
+    )
+}
+
+const PageHeaderCom = () => {
+    const {logout, user} = useAuth();
     const items: MenuProps['items'] = [
         {
           key: '1',
@@ -38,34 +62,26 @@ export const AuthenticatedApp = () => {
           icon: <SmileOutlined />,
         }
       ];
-    const params: any = null;
-    return (
-        <Container>
-            <PageHeader between={true}>
-                <PageHeaderLeft gap={3}>
-                    {/* <img src={softLogo} /> 用svg格式展示图片 */}
-                    <SoftwareLogo width={'18rem'} color={'rgb(38, 132, 255)'}/>
-                    <h1>项目列表</h1>
-                    <h1>用户</h1>
-                </PageHeaderLeft>
-                <PageHeaderRight>
-                    <Dropdown 
-                        menu={{items}}
-                    >
-                        <Button type="link">
-                            hi~ {user?.name}
-                            <DownOutlined />
-                        </Button>
-                        
-                    </Dropdown>
-                </PageHeaderRight>
-               
-            </PageHeader>
-            <Main>
-                <ProjectScreen />
-            </Main>
-        </Container>
-    )
+    return <PageHeader between={true}>
+    <PageHeaderLeft gap={3}>
+        {/* <img src={softLogo} /> 用svg格式展示图片 */}
+        <SoftwareLogo width={'18rem'} color={'rgb(38, 132, 255)'}/>
+        <h1>项目列表</h1>
+        <h1>用户</h1>
+    </PageHeaderLeft>
+    <PageHeaderRight>
+        <Dropdown 
+            menu={{items}}
+        >
+            <Button type="link">
+                hi~ {user?.name}
+                <DownOutlined />
+            </Button>
+            
+        </Dropdown>
+    </PageHeaderRight>
+   
+</PageHeader>
 }
 
 const Container = styled.div`

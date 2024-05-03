@@ -1,6 +1,6 @@
 
 import React, {useEffect} from 'react';
-import { ProjectScreen } from 'screeen/project-list';
+import { ProjectScreenList } from 'screeen/project-list';
 import { useAuth } from 'context/auth-context';
 import styled from '@emotion/styled';
 
@@ -32,7 +32,7 @@ export const AuthenticatedApp = () => {
             </PageHeader>
             <Nav >Nav </Nav>
             <Main>
-                <ProjectScreen />
+                <ProjectScreenList />
             </Main>
             <Aside >Aside</Aside>
             <Footer >Footer</Footer>

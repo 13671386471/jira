@@ -17,7 +17,7 @@ import { Test } from './test';
 const apiUrl = process.env.REACT_APP_API_URL;
 
 console.log('apiUrl:::', apiUrl);
-export const ProjectScreen = () => {
+export const ProjectScreenList = () => {
     const [param ,setParam] = useState({
         name: '',
         personId: ''
@@ -30,7 +30,7 @@ export const ProjectScreen = () => {
     return (
         <Container>
             <h1>项目列表</h1>
-            <Test />
+            {/* <Test /> */}
             <SearchPanel
                 param={param}
                 setParam={setParam}
