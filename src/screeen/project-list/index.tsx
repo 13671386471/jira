@@ -13,7 +13,9 @@ import { useProject } from 'utils/project';
 import { useUsers } from 'utils/user';
 // import { logout } from 'auth-provider'; // 和从useAuth中导出的logout函数进行区分，为什么这个直接导入的函数不能触发登出
 import { useDocumentTitle } from 'utils';
+import { Test } from './test';
 const apiUrl = process.env.REACT_APP_API_URL;
+
 console.log('apiUrl:::', apiUrl);
 export const ProjectScreen = () => {
     const [param ,setParam] = useState({
@@ -28,6 +30,7 @@ export const ProjectScreen = () => {
     return (
         <Container>
             <h1>项目列表</h1>
+            <Test />
             <SearchPanel
                 param={param}
                 setParam={setParam}
