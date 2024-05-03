@@ -20,17 +20,17 @@ const apiUrl = process.env.REACT_APP_API_URL;
 
 console.log('apiUrl:::', apiUrl);
 export const ProjectScreenList = () => {
-    const [param ,setParam] = useState({
+    const [abc ,setParam] = useState({
         name: '',
         personId: ''
     })
-    const newParam = useUrlQueryParam(['name', 'personId']);
-    const [debounceValue] = useDebounce(newParam, 600);
+    const [param] = useUrlQueryParam(['name', 'personId']);
+    const debounceValue = useDebounce(param, 600);
 
     const {isLoading, error, data: list } = useProject(debounceValue);
     const {data: users} = useUsers();
     useDocumentTitle('项目列表', false);
-    console.log('searchParams:', newParam)
+    console.log('searchParams:', param)
     return (
         <Container>
             <h1>项目列表</h1>
@@ -49,7 +49,7 @@ export const ProjectScreenList = () => {
         </Container>
     )
 }
-
+ProjectScreenList.whyDidYouRender = true;
 const Container = styled.div`
     padding: 3.2rem;
 `
