@@ -8,16 +8,14 @@ import styled from '@emotion/styled';
 import logo from '../assets/logo.svg';
 import left from '../assets/left.svg';
 import right from '../assets/right.svg';
+import { useDocumentTitle } from 'utils';
 
 export const UnAutnhenticatedApp = () => {
     const [isRegister, setIsRegister] = useState(false);
     const [error, setError] = useState<Error | null>(null);
-
+    useDocumentTitle('请登录注册', false);
     return (
         <Wrapper>
-            <Helmet>
-                <title>{isRegister ? '请注册' : '请登陆'}</title>
-            </Helmet>
             <Header />
             <Backgrounnd />
             <ShadowCard>

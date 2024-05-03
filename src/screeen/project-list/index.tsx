@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Typography } from 'antd';
 import qs from 'qs';
 import styled from '@emotion/styled'
-import { Helmet } from 'react-helmet';
+// import { Helmet } from 'react-helmet';
 import { SearchPanel } from "./search-panel"
 import { Project, ProjectList } from "./list"
 import { clearnObject, useMount, useDebounce } from "utils";
@@ -12,6 +12,7 @@ import { useAsync } from 'utils/use-async';
 import { useProject } from 'utils/project';
 import { useUsers } from 'utils/user';
 // import { logout } from 'auth-provider'; // 和从useAuth中导出的logout函数进行区分，为什么这个直接导入的函数不能触发登出
+import { useDocumentTitle } from 'utils';
 const apiUrl = process.env.REACT_APP_API_URL;
 console.log('apiUrl:::', apiUrl);
 export const ProjectScreen = () => {
@@ -23,12 +24,9 @@ export const ProjectScreen = () => {
 
     const {isLoading, error, data: list } = useProject(debounceValue);
     const {data: users} = useUsers();
-   
+    useDocumentTitle('项目列表', false);
     return (
         <Container>
-            <Helmet>
-                <title>项目列表</title>
-            </Helmet>
             <h1>项目列表</h1>
             <SearchPanel
                 param={param}
