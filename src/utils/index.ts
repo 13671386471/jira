@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 // 函数中最好不修改传进来的参数对象
 //object 类型包含的情况比较多，不仅仅有所理解键值对对象；函数、数组、正则表达式等都是对象
 // let a: object;
@@ -52,7 +52,7 @@ export const useDebounce = <T>(value: T, delay?: number) => {
 }
 
 export const useDocumentTitle = (title: string, keepOnUnmount: boolean = true) => {
-    const oldTitle = document.title; //useRef(document.title).current;
+    const oldTitle = useRef(document.title).current;//document.title; //
     useEffect(() => {
         document.title = title;
     }, [title]);
@@ -62,5 +62,5 @@ export const useDocumentTitle = (title: string, keepOnUnmount: boolean = true) =
                 document.title = oldTitle;
             }
         }
-    }, []);
+    }, [keepOnUnmount, oldTitle]);
 }

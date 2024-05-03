@@ -58,7 +58,7 @@ export const AuthProvider = ({children}: {children: React.ReactNode}) => {
 
 export const useAuth = () => {
     const context = useContext(AuthContext);
-    console.log('AuthContext::',context, AuthContext);
+    // console.log('AuthContext::',context, AuthContext);
     // constext 就是传入<AuthContext.Provider vlaue的对象{user, login, register, logout}
     if (!context) {
         throw new Error('useAuth必须在AuthProvider中使用');
