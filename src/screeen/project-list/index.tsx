@@ -20,11 +20,11 @@ const apiUrl = process.env.REACT_APP_API_URL;
 
 console.log('apiUrl:::', apiUrl);
 export const ProjectScreenList = () => {
-    const [abc ,setParam] = useState({
-        name: '',
-        personId: ''
-    })
-    const [param] = useUrlQueryParam(['name', 'personId']);
+    // const [abc ,setParam] = useState({
+    //     name: '',
+    //     personId: ''
+    // })
+    const [param, setParam] = useUrlQueryParam(['name', 'personId']);
     const debounceValue = useDebounce(param, 600);
 
     const {isLoading, error, data: list } = useProject(debounceValue);
