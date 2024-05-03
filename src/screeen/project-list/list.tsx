@@ -27,7 +27,9 @@ export const ProjectList = ({users, ...tableProps}: ProjectListProp) => {
                 render: (text, record, index) => {
                     console.log('render::', text, record, index, tableProps);
                     // <Link to={`/projects/${record.id}`}>查看详情</Link>
-                    return <Link to={`/projects/${record.id}`}>{text}</Link>
+                    // 不指定前面的/projects，会自动加上，因为是当前路径下点击跳转，那么就以当前为跟路径，自动在后面加跳转的id
+                    // 但是要注意前面不能加/，加上的话那么就是根路径来
+                    return <Link to={`${record.id}`}>{text}</Link>
                 }
             },
             {

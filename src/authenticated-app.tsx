@@ -12,7 +12,7 @@ import styled from '@emotion/styled';
 import { Row } from 'components/lib';
 // import softLogo from 'assets/software-logo.svg';
 import { ReactComponent as SoftwareLogo } from 'assets/software-logo.svg';
-import { partialMatchKey } from 'react-query/types/core/utils';
+import { resetRoute } from 'utils';
 import { ProjectScreen } from 'screeen/project';
 
 
@@ -38,8 +38,10 @@ export const AuthenticatedApp = () => {
                 <Router>
                     <Routes>
                         {/* <Route path={'/projects'} element={<Navigate to={'/projects/list'} />} /> */}{/**默认写法*/}
+                        {/* <Route index element={<ProjectScreenList />}></Route> */}
                         <Route path={'/projects'} element={<ProjectScreenList />} />
                         <Route path={'/projects/:projectId/*'} element={<ProjectScreen />} />
+                        <Route path="*" element={<Navigate to={'/projects'} />} />
                         {/* <Navigate to={'/projects'} /> */}
                     </Routes>
                 </Router>
@@ -65,7 +67,10 @@ const PageHeaderCom = () => {
     return <PageHeader between={true}>
     <PageHeaderLeft gap={3}>
         {/* <img src={softLogo} /> 用svg格式展示图片 */}
-        <SoftwareLogo width={'18rem'} color={'rgb(38, 132, 255)'}/>
+        <Button type='link' onClick={resetRoute}>
+            <SoftwareLogo width={'18rem'} color={'rgb(38, 132, 255)'}/>
+        </Button>
+        
         <h1>项目列表</h1>
         <h1>用户</h1>
     </PageHeaderLeft>
