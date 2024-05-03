@@ -41,7 +41,6 @@ export const AuthenticatedApp = () => {
     const params: any = null;
     return (
         <Container>
-            {params.name}
             <PageHeader between={true}>
                 <PageHeaderLeft gap={3}>
                     {/* <img src={softLogo} /> 用svg格式展示图片 */}

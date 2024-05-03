@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import {Helmet} from "react-helmet";
 import { Button, Typography } from 'antd';
 import { RegisterScreen } from './register';
 import { Login } from './login';
@@ -14,6 +15,9 @@ export const UnAutnhenticatedApp = () => {
 
     return (
         <Wrapper>
+            <Helmet>
+                <title>{isRegister ? '请注册' : '请登陆'}</title>
+            </Helmet>
             <Header />
             <Backgrounnd />
             <ShadowCard>

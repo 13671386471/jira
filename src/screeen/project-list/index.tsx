@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Typography } from 'antd';
 import qs from 'qs';
 import styled from '@emotion/styled'
+import { Helmet } from 'react-helmet';
 import { SearchPanel } from "./search-panel"
 import { Project, ProjectList } from "./list"
 import { clearnObject, useMount, useDebounce } from "utils";
@@ -25,6 +26,9 @@ export const ProjectScreen = () => {
    
     return (
         <Container>
+            <Helmet>
+                <title>项目列表</title>
+            </Helmet>
             <h1>项目列表</h1>
             <SearchPanel
                 param={param}
