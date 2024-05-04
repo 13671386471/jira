@@ -3,6 +3,8 @@ import dayjs from "dayjs";
 //  
 import { Link } from "react-router-dom";
 import { User } from "./search-panel";
+import { Pin } from "components/pin";
+import { useProjectEdit } from "utils/project";
 export interface Project{
     id: number,
     name: string,
@@ -17,9 +19,30 @@ interface ProjectListProp extends TableProps<Project> {
 }
 
 export const ProjectList = ({users, ...tableProps}: ProjectListProp) => {
+    const { mutate } = useProjectEdit();
+    const pinProject = (id: number) => (pin: boolean) => {
+        // 函数柯理化，减少参数传递的个数
+        mutate({id, pin})
+    }
     return <Table
         pagination={false}
         columns={[
+            {
+                title: <Pin checked={true}/>,
+                dataIndex: 'pin',
+                key: 'pin',
+                width: '100px',
+                render: (pin, project) => {
+
+                    return <Pin 
+                        checked={project.pin} 
+                        // 柯理化写法; project.id在没触发事件的时候就已经拿到了
+                        onCheckedChange={pinProject(project.id)}
+                        // 非柯理化写法
+                        // onCheckedChange={(pin) => mutate({pin, id: project.id})}
+                    />
+                }
+            },
             {
                 title: '名称',
                 dataIndex: 'name',

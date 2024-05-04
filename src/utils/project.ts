@@ -17,3 +17,37 @@ export const useProject = (param: Partial<Project>) => {
 
     return result
 }
+
+export const useProjectEdit = () => {
+    const { run, ...asyncResult } = useAsync();
+    const ajax = useHttp();
+
+    const mutate = (params: Partial<Project>) => {
+        return run(ajax(`projects/${params.id}`, {
+            method: 'PATCH',
+            data: params
+        }))
+    }
+
+    return {
+        mutate,
+        ...asyncResult
+    }
+}
+
+export const useProjectAdd = () => {
+    const { run, ...asyncResult } = useAsync();
+    const ajax = useHttp();
+
+    const mutate = (params: Partial<Project>) => {
+        return run(ajax(`projects/${params.id}`, {
+            method: 'POST',
+            data: params
+        }))
+    }
+
+    return {
+        mutate,
+        ...asyncResult
+    }
+}
