@@ -1,9 +1,11 @@
 import { css } from "@emotion/css";
 import React, { useEffect, useState } from 'react';
 import { Input, Select,Form } from 'antd';
+import { Project } from "./list";
+import { UserSelect } from "components/userSelect";
 
 export interface User{
-    id: string;
+    id: number;
     name: string;
     email: string;
     title: string;
@@ -11,21 +13,13 @@ export interface User{
     token: string;
 }
 interface SearchPanelProps {
-    param: {
-        name: string;
-        personId: string;
-    };
+    param: Partial<Pick<Project, 'name' | 'personId'>>;
+    // param: {
+    //     name: string;
+    //     personId: string;
+    // };
     setParam: (param: SearchPanelProps['param']) => void;
     users: User[]
-    // users: {
-    //     id: string;
-    //     name: string;
-    //     email: string;
-    //     title: string;
-    //     organization: string;
-    //     token: string;
-    // }[];
-    
 }
 
 export const SearchPanel = ({param, setParam, users}: SearchPanelProps) => {
@@ -54,10 +48,20 @@ export const SearchPanel = ({param, setParam, users}: SearchPanelProps) => {
             />
         </Form.Item>
         <Form.Item>
-            <Select value={param.personId} onChange={(val) => {
+            <UserSelect
+                defaultOptionName={"负责人"}
+                value={param.personId} 
+                onChange={(val: number | undefined) => {
+                    setParam({
+                        ...param,
+                        personId: val
+                    })
+                }} 
+            />
+            {/* <Select value={param.personId} onChange={(val) => {
                 setParam({
                     ...param,
-                    personId: val
+                    personId: Number(val)
                 })
             }}>
                 <Select.Option value="">负责人</Select.Option>
@@ -65,13 +69,13 @@ export const SearchPanel = ({param, setParam, users}: SearchPanelProps) => {
                     users.map(person => {
                         return <Select.Option 
                                 key={person.id} 
-                                value={String(person.id)}
+                                value={Number(person.id)}
                             >
                                 {person.name}
                             </Select.Option>
                     })
                 }
-            </Select>
+            </Select> */}
         </Form.Item>
     </Form>
     

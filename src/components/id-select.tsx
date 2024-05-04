@@ -5,8 +5,8 @@ type SelectProps = Omit<React.ComponentProps<typeof Select>, 'value' | 'onChange
 
 // 解决透传组件原本自带所有属性的问题，因为不可能把组件的所有属性再定义一边
 interface IdSelectProps extends SelectProps {
-    value: number | string | null | undefined,
-    onChange: (value?: number) => void,
+    value?: number | string | null | undefined,
+    onChange?: (value?: number) => void,
     defaultOptionName?: string,
     options?: {name: string, id: number}[]
 }
@@ -22,9 +22,9 @@ interface IdSelectProps extends SelectProps {
 export const IdSelect = (props: IdSelectProps) => {
     const {value, onChange, defaultOptionName, options, ...restProps} = props;
     return <Select 
-        value={toNumber(value)} 
+        value={options?.length? toNumber(value): 0} 
         onChange={(value) => {
-            onChange(toNumber(value) || undefined);
+            onChange?.(toNumber(value) || undefined);
         }}
         {...restProps}
     >

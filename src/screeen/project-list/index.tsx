@@ -16,6 +16,7 @@ import { useDocumentTitle } from 'utils';
 import { Test } from './test';
 import { useSearchParams } from 'react-router-dom';
 import { useUrlQueryParam } from 'utils/url';
+import { useProjectSearchParams } from './util';
 const apiUrl = process.env.REACT_APP_API_URL;
 
 console.log('apiUrl:::', apiUrl);
@@ -24,9 +25,11 @@ export const ProjectScreenList = () => {
     //     name: '',
     //     personId: ''
     // })
-    const [param, setParam] = useUrlQueryParam(['name', 'personId']);
-    const debounceValue = useDebounce(param, 600);
+    // const [param, setParam] = useUrlQueryParam(['name', 'personId']);
+    // const projectParams = {...param, personId: Number(param.personId)}
 
+    const [param, setParam] = useProjectSearchParams();
+    const debounceValue = useDebounce(param, 600);
     const {isLoading, error, data: list } = useProject(debounceValue);
     const {data: users} = useUsers();
     useDocumentTitle('项目列表', false);

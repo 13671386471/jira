@@ -18,8 +18,8 @@ export const useUrlQueryParam = <K extends string>(keys: K[]) => {
                 return {...prev, [key]: searchParam.get(key) || ''}
             }, {} as {[key in K]: string})
         }, [searchParam]), 
-
-        (params: Partial<{[key in K]: string}>) => {
+                                    //因为不确定值是什么类型的
+        (params: Partial<{[key in K]: unknown}>) => {
             const o = clearnObject({
                 ...Object.fromEntries(searchParam),
                 ...params
