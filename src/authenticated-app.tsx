@@ -9,7 +9,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { ProjectScreenList } from 'screeen/project-list';
 import { useAuth } from 'context/auth-context';
 import styled from '@emotion/styled';
-import { Row } from 'components/lib';
+import { ButtonNoPadding, Row } from 'components/lib';
 // import softLogo from 'assets/software-logo.svg';
 import { ReactComponent as SoftwareLogo } from 'assets/software-logo.svg';
 import { resetRoute } from 'utils';
@@ -34,15 +34,14 @@ export const AuthenticatedApp = () => {
     const [projectModalOpen, setProjectModalOpen]= useState(false);
     return (
         <Container>
-            <PageHeaderCom />
+            <PageHeaderCom setProjectModalOpen={setProjectModalOpen}/>
             <Main>
                 {/* <ProjectScreenList /> */}
-                <Button onClick={() => setProjectModalOpen(true)}>打开</Button>
                 <Router>
                     <Routes>
                         {/* <Route path={'/projects'} element={<Navigate to={'/projects/list'} />} /> */}{/**默认写法*/}
                         {/* <Route index element={<ProjectScreenList />}></Route> */}
-                        <Route path={'/projects'} element={<ProjectScreenList />} />
+                        <Route path={'/projects'} element={<ProjectScreenList  setProjectModalOpen={setProjectModalOpen} />} />
                         <Route path={'/projects/:projectId/*'} element={<ProjectScreen />} />
                         <Route path="*" element={<Navigate to={'/projects'} />} />
                         {/* <Navigate to={'/projects'} /> */}
@@ -57,7 +56,7 @@ export const AuthenticatedApp = () => {
     )
 }
 
-const PageHeaderCom = () => {
+const PageHeaderCom = (props: {setProjectModalOpen: (isOpen: boolean) => void}) => {
     const {logout, user} = useAuth();
     const items: MenuProps['items'] = [
         {
@@ -73,11 +72,13 @@ const PageHeaderCom = () => {
     return <PageHeader between={true}>
     <PageHeaderLeft gap={3}>
         {/* <img src={softLogo} /> 用svg格式展示图片 */}
-        <Button style={{padding: 0}} type='link' onClick={resetRoute}>
+        <ButtonNoPadding style={{padding: 0}} type='link' onClick={resetRoute}>
             <SoftwareLogo width={'18rem'} color={'rgb(38, 132, 255)'}/>
-        </Button>
+        </ButtonNoPadding>
         
-        <ProjectPopover />
+        <ProjectPopover 
+            setProjectModalOpen = { props.setProjectModalOpen }
+        />
         <span>用户</span>
     </PageHeaderLeft>
     <PageHeaderRight>

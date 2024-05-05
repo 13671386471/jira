@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Typography } from 'antd';
+import { Button, Typography } from 'antd';
 import qs from 'qs';
 import styled from '@emotion/styled'
 // import { Helmet } from 'react-helmet';
 import { SearchPanel } from "./search-panel"
 import { Project, ProjectList } from "./list"
+import { Row } from 'components/lib';
 import { clearnObject, useMount, useDebounce } from "utils";
 import { useHttp } from "utils/http";
 import { useAuth } from 'context/auth-context';
@@ -17,10 +18,11 @@ import { Test } from './test';
 import { useSearchParams } from 'react-router-dom';
 import { useUrlQueryParam } from 'utils/url';
 import { useProjectSearchParams } from './util';
+import { ButtonNoPadding } from 'components/lib';
 const apiUrl = process.env.REACT_APP_API_URL;
 
 console.log('apiUrl:::', apiUrl);
-export const ProjectScreenList = () => {
+export const ProjectScreenList = (props: { setProjectModalOpen: (isOpen: boolean)=> void}) => {
     // const [abc ,setParam] = useState({
     //     name: '',
     //     personId: ''
@@ -36,9 +38,13 @@ export const ProjectScreenList = () => {
     console.log('searchParams:', param)
     return (
         <Container>
-            <h1>项目列表</h1>
-            {/* <Test /> */}
-            <button onClick={retry}>retry</button>
+            <Row between={true}>
+                <h1>项目列表</h1>
+                <Button onClick={() => props?.setProjectModalOpen?.(true)}>
+                    创建项目
+                </Button>
+            </Row>
+            
             <SearchPanel
                 param={param}
                 setParam={setParam}
@@ -46,6 +52,7 @@ export const ProjectScreenList = () => {
             />
             {error ? <Typography.Text type="danger">{error.message}</Typography.Text> : null}
             <ProjectList 
+                setProjectModalOpen={props.setProjectModalOpen}
                 dataSource={list || []}
                 loading={isLoading}
                 users={users || []}

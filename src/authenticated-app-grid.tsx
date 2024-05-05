@@ -32,7 +32,7 @@ export const AuthenticatedApp = () => {
             </PageHeader>
             <Nav >Nav </Nav>
             <Main>
-                <ProjectScreenList />
+                {/* <ProjectScreenList /> */}
             </Main>
             <Aside >Aside</Aside>
             <Footer >Footer</Footer>
