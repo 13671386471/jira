@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useMountedRef } from "utils";
 
 
 interface State<D>{
@@ -18,6 +19,7 @@ const defaultConfig ={
 
 export const useAsync = <D>(initialState?: State<D>, initConfig?: typeof defaultConfig) => {
     const config = {...defaultConfig, ...initConfig}
+    const mountRef = useMountedRef();
     const [state, setState] = useState<State<D>>({
         ...defaultState,
         ...initialState
@@ -48,6 +50,7 @@ export const useAsync = <D>(initialState?: State<D>, initConfig?: typeof default
         })
         setState({...state, stat: 'loading'})
         return promise.then(data => {
+            if(!mountRef.current) return;
             setData(data)
             return data
         }).catch(error => {

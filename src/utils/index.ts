@@ -69,3 +69,18 @@ export const useDocumentTitle = (title: string, keepOnUnmount: boolean = true) =
 export const resetRoute = () => {
     window.location.href = window.location.origin;
 }
+
+/**
+ * 
+ * @returns 当组件未渲染/卸载时，返回false；否则返回true
+ */
+export const useMountedRef = () => {
+    const mountedRef = useRef(false);
+    useEffect(() => {
+        mountedRef.current = true;
+        return () => {
+            mountedRef.current = false;
+        }
+    }, []);
+    return mountedRef;
+}
