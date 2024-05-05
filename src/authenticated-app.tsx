@@ -1,5 +1,5 @@
 
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import { Button, Dropdown, Menu } from 'antd';
 import type { MenuProps } from 'antd';
 import { DownOutlined, SmileOutlined } from '@ant-design/icons';
@@ -14,6 +14,8 @@ import { Row } from 'components/lib';
 import { ReactComponent as SoftwareLogo } from 'assets/software-logo.svg';
 import { resetRoute } from 'utils';
 import { ProjectScreen } from 'screeen/project';
+import { ProjectModal } from 'screeen/project-list/peoject-modal';
+import { ProjectPopover } from 'components/project-popover';
 
 
 /**
@@ -29,12 +31,13 @@ import { ProjectScreen } from 'screeen/project';
  */
 
 export const AuthenticatedApp = () => {
+    const [projectModalOpen, setProjectModalOpen]= useState(false);
     return (
         <Container>
             <PageHeaderCom />
             <Main>
                 {/* <ProjectScreenList /> */}
-
+                <Button onClick={() => setProjectModalOpen(true)}>打开</Button>
                 <Router>
                     <Routes>
                         {/* <Route path={'/projects'} element={<Navigate to={'/projects/list'} />} /> */}{/**默认写法*/}
@@ -46,7 +49,10 @@ export const AuthenticatedApp = () => {
                     </Routes>
                 </Router>
             </Main>
-            
+            <ProjectModal
+                projectModalOpen={projectModalOpen} 
+                onClose={() => setProjectModalOpen(false)} 
+            />
         </Container>
     )
 }
@@ -67,12 +73,12 @@ const PageHeaderCom = () => {
     return <PageHeader between={true}>
     <PageHeaderLeft gap={3}>
         {/* <img src={softLogo} /> 用svg格式展示图片 */}
-        <Button type='link' onClick={resetRoute}>
+        <Button style={{padding: 0}} type='link' onClick={resetRoute}>
             <SoftwareLogo width={'18rem'} color={'rgb(38, 132, 255)'}/>
         </Button>
         
-        <h1>项目列表</h1>
-        <h1>用户</h1>
+        <ProjectPopover />
+        <span>用户</span>
     </PageHeaderLeft>
     <PageHeaderRight>
         <Dropdown 
