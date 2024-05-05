@@ -15,14 +15,15 @@ export interface Project{
 }
 interface ProjectListProp extends TableProps<Project> { 
     // list: Project[],
-    users: User[]
+    users: User[],
+    refresh?: () => void,
 }
 
 export const ProjectList = ({users, ...tableProps}: ProjectListProp) => {
     const { mutate } = useProjectEdit();
     const pinProject = (id: number) => (pin: boolean) => {
         // 函数柯理化，减少参数传递的个数
-        mutate({id, pin})
+        mutate({id, pin}).then(tableProps?.refresh)
     }
     return <Table
         pagination={false}

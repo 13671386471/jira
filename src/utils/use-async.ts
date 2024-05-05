@@ -22,6 +22,7 @@ export const useAsync = <D>(initialState?: State<D>, initConfig?: typeof default
         ...defaultState,
         ...initialState
     });
+    const [retry, setRetry] = useState(() => () => {});
     const setData = (data: D) => setState({
         data,
         stat: 'success',
@@ -32,10 +33,19 @@ export const useAsync = <D>(initialState?: State<D>, initConfig?: typeof default
         stat: 'error',
         error
     });
-    const run = (promise: Promise<D>) => {
+    //泛型 :Promise<D> 
+    // 这里的 D 是一个类型参数，代表这个 Promise 在成功（fulfilled）时将会解析的结果的数据类型
+    const run = (promise: Promise<D>, runConfig?: {retry: () => Promise<D>}) => {
         if (!promise || !promise.then) {
             throw new Error('请传入 Promise 类型数据')
         }
+        setRetry(() => () => {
+            console.log('setCallback::');
+            if(runConfig?.retry){
+                run(runConfig?.retry?.(), runConfig);
+            }
+            
+        })
         setState({...state, stat: 'loading'})
         return promise.then(data => {
             setData(data)
@@ -50,7 +60,7 @@ export const useAsync = <D>(initialState?: State<D>, initConfig?: typeof default
                 return error;
             }
         })
-   }
+    }
 
     return {
         isIdle: state.stat === 'idle',
@@ -61,6 +71,7 @@ export const useAsync = <D>(initialState?: State<D>, initConfig?: typeof default
         setError,
         // 用来触发异步请求
         run,
+        retry,
         ...state
     }
 }

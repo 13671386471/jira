@@ -30,7 +30,7 @@ export const ProjectScreenList = () => {
 
     const [param, setParam] = useProjectSearchParams();
     const debounceValue = useDebounce(param, 600);
-    const {isLoading, error, data: list } = useProject(debounceValue);
+    const {isLoading, error, data: list, retry } = useProject(debounceValue);
     const {data: users} = useUsers();
     useDocumentTitle('项目列表', false);
     console.log('searchParams:', param)
@@ -38,6 +38,7 @@ export const ProjectScreenList = () => {
         <Container>
             <h1>项目列表</h1>
             {/* <Test /> */}
+            <button onClick={retry}>retry</button>
             <SearchPanel
                 param={param}
                 setParam={setParam}
@@ -48,6 +49,7 @@ export const ProjectScreenList = () => {
                 dataSource={list || []}
                 loading={isLoading}
                 users={users || []}
+                refresh = { retry }
             />
         </Container>
     )
