@@ -5,7 +5,7 @@ import { ButtonNoPadding } from "./lib";
 
 
 
-export const ProjectPopover = (props: {setProjectModalOpen: (open: boolean) => void}) => {
+export const ProjectPopover = (props: {renderProjectBtn: JSX.Element}) => {
     const {data: projects, isLoading} = useProject({});
     const pinProject = projects?.filter(project => project.pin);
     const content = <ContentContainer>
@@ -20,12 +20,9 @@ export const ProjectPopover = (props: {setProjectModalOpen: (open: boolean) => v
             }
        </List>
        <Divider/>
-       <ButtonNoPadding 
-            type="link" 
-            onClick={() => props.setProjectModalOpen(true)}
-        >
-            新建项目
-        </ButtonNoPadding>
+       {
+            props.renderProjectBtn
+       }
     </ContentContainer>
 
 

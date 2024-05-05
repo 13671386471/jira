@@ -22,7 +22,7 @@ import { ButtonNoPadding } from 'components/lib';
 const apiUrl = process.env.REACT_APP_API_URL;
 
 console.log('apiUrl:::', apiUrl);
-export const ProjectScreenList = (props: { setProjectModalOpen: (isOpen: boolean)=> void}) => {
+export const ProjectScreenList = (props: { renderProjectBtn: JSX.Element}) => {
     // const [abc ,setParam] = useState({
     //     name: '',
     //     personId: ''
@@ -40,9 +40,9 @@ export const ProjectScreenList = (props: { setProjectModalOpen: (isOpen: boolean
         <Container>
             <Row between={true}>
                 <h1>项目列表</h1>
-                <Button onClick={() => props?.setProjectModalOpen?.(true)}>
-                    创建项目
-                </Button>
+                {
+                    props.renderProjectBtn
+                }
             </Row>
             
             <SearchPanel
@@ -52,7 +52,7 @@ export const ProjectScreenList = (props: { setProjectModalOpen: (isOpen: boolean
             />
             {error ? <Typography.Text type="danger">{error.message}</Typography.Text> : null}
             <ProjectList 
-                setProjectModalOpen={props.setProjectModalOpen}
+                renderProjectBtn={props.renderProjectBtn}
                 dataSource={list || []}
                 loading={isLoading}
                 users={users || []}

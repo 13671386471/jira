@@ -19,7 +19,7 @@ interface ProjectListProp extends TableProps<Project> {
     // list: Project[],
     users: User[],
     refresh?: () => void,
-    setProjectModalOpen: (isOpen: boolean) => void
+    renderProjectBtn: JSX.Element
 }
 
 export const ProjectList = ({users, ...tableProps}: ProjectListProp) => {
@@ -90,11 +90,7 @@ export const ProjectList = ({users, ...tableProps}: ProjectListProp) => {
                     const items: MenuProps['items'] = [
                         {
                           key: '1',
-                          label: (
-                            <Button type="link" onClick={() => tableProps.setProjectModalOpen(true)}>
-                              编辑
-                            </Button>
-                          ),
+                          label: tableProps.renderProjectBtn,
                         }
                       ];
                     return <Dropdown 

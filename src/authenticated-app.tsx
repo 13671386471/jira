@@ -34,14 +34,34 @@ export const AuthenticatedApp = () => {
     const [projectModalOpen, setProjectModalOpen]= useState(false);
     return (
         <Container>
-            <PageHeaderCom setProjectModalOpen={setProjectModalOpen}/>
+            <PageHeaderCom 
+                // setProjectModalOpen={setProjectModalOpen}
+                renderProjectBtn = {
+                    <ButtonNoPadding 
+                        type="link" 
+                        onClick={() => setProjectModalOpen(true)}
+                    >
+                        新建项目
+                    </ButtonNoPadding>
+                }
+            />
             <Main>
                 {/* <ProjectScreenList /> */}
                 <Router>
                     <Routes>
                         {/* <Route path={'/projects'} element={<Navigate to={'/projects/list'} />} /> */}{/**默认写法*/}
                         {/* <Route index element={<ProjectScreenList />}></Route> */}
-                        <Route path={'/projects'} element={<ProjectScreenList  setProjectModalOpen={setProjectModalOpen} />} />
+                        <Route 
+                            path={'/projects'} 
+                            element={<ProjectScreenList renderProjectBtn = {
+                                <ButtonNoPadding 
+                                    type="link" 
+                                    onClick={() => setProjectModalOpen(true)}
+                                >
+                                    新建项目
+                                </ButtonNoPadding>
+                            } />} 
+                        />
                         <Route path={'/projects/:projectId/*'} element={<ProjectScreen />} />
                         <Route path="*" element={<Navigate to={'/projects'} />} />
                         {/* <Navigate to={'/projects'} /> */}
@@ -56,7 +76,7 @@ export const AuthenticatedApp = () => {
     )
 }
 
-const PageHeaderCom = (props: {setProjectModalOpen: (isOpen: boolean) => void}) => {
+const PageHeaderCom = (props: {renderProjectBtn: JSX.Element}) => {
     const {logout, user} = useAuth();
     const items: MenuProps['items'] = [
         {
@@ -77,7 +97,7 @@ const PageHeaderCom = (props: {setProjectModalOpen: (isOpen: boolean) => void}) 
         </ButtonNoPadding>
         
         <ProjectPopover 
-            setProjectModalOpen = { props.setProjectModalOpen }
+            {...props}
         />
         <span>用户</span>
     </PageHeaderLeft>
