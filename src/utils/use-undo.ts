@@ -72,6 +72,7 @@ export const useUndo = <T,>(initialValue: T) => {
 
         setState(currnetState => {
             const {past, present, future} = currnetState;
+            if(present === value) return currnetState;
             return {
                 past: [...past, present],
                 present: value,
