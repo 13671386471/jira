@@ -111,3 +111,49 @@ param='sring'
 // 1. 【类型别名】可以重复定义；2. 【】类型别名不能继承；
 // 3、interface不能像类型别名那样定义联合类型、交叉类型；
 // 4、interface没法实现utility Types; type可以；Partial<T> Parameters<>
+
+
+// 类型操作符：
+// 1、keyof 它用于从给定的对象类型中提取所有键（属性名）的联合类型
+// interface PersonNew {
+//     name: string;
+//     age: number;
+// }
+// type PersonNewKey = keyof PersonNew; // PersonNewKey = 'name' | 'age'
+// function getUer<T>(user: T, key: keyof T){
+//     console.log('getUer:', user, key);
+// }
+// getUer({name: 'lihua', age: 22}, 'age');
+
+// 2、typeof 在类型上下文中获取一个变量的类型
+// let someValue = "hello";
+// type SomeValueType = typeof someValue; // SomeValueType 类型为 string
+
+
+// 3、索引类型查询与映射类型示例
+// interface Animal {
+//     name: string;
+//     age: number;
+// }
+// 使用映射类型使所有属性变为可选的
+// 映射类型 (mapped types): TypeScript允许你基于现有类型创建新的类型，通过遍历原始类型的每个属性并应用某种转换。
+// 这通常与 keyof 和索引类型查询一起使用。例如，你可以创建一个类型，将所有属性从可选变为必需，或将它们的类型转换为 null
+// type PartialAnimal = {
+//     [P in keyof Animal]?: Animal[P]; 
+//     // 遍历Animal的所有键P，然后为每个键创建一个可选属性，其类型保持不变
+// };
+
+//in 关键字示例（结合映射类型）
+// interface Config {
+//     theme: string;
+//     version: number;
+// }
+// 使用 'in' 关键字遍历 Config 的键，并创建一个新的类型，其中每个键的值类型变为 string
+// type StringifiedConfig = {
+//     [K in keyof Config]: string;
+// };
+  
+// const configExample: StringifiedConfig = {
+//     theme: "dark",
+//     version: "1.2", // 注意：原本version应为number，但此处被强制转换为string
+// };
