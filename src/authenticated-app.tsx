@@ -31,7 +31,7 @@ import { ProjectPopover } from 'components/project-popover';
  */
 
 export const AuthenticatedApp = () => {
-    const [projectModalOpen, setProjectModalOpen]= useState(false);
+    const [projectModalOpen, setProjectModalOpen]= useState(false); 
     return (
         <Container>
             <PageHeaderCom 
