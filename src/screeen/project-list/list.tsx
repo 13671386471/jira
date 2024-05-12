@@ -7,6 +7,8 @@ import { User } from "./search-panel";
 import { Pin } from "components/pin";
 import { useProjectEdit } from "utils/project";
 import { ButtonNoPadding } from "components/lib";
+import { useDispatch } from "react-redux";
+import { projectListActions } from "store/reduceSlice/project-list-slice";
 export interface Project{
     id: number,
     name: string,
@@ -19,10 +21,10 @@ interface ProjectListProp extends TableProps<Project> {
     // list: Project[],
     users: User[],
     refresh?: () => void,
-    renderProjectBtn: JSX.Element
 }
 
 export const ProjectList = ({users, ...tableProps}: ProjectListProp) => {
+    const dispatch = useDispatch();
     const { mutate } = useProjectEdit();
     const pinProject = (id: number) => (pin: boolean) => {
         // 函数柯理化，减少参数传递的个数
@@ -90,7 +92,12 @@ export const ProjectList = ({users, ...tableProps}: ProjectListProp) => {
                     const items: MenuProps['items'] = [
                         {
                           key: '1',
-                          label: tableProps.renderProjectBtn,
+                          label: <ButtonNoPadding 
+                          type="link" 
+                          onClick={() => dispatch(projectListActions.opennProjectModal())}
+                      >
+                          新建项目
+                      </ButtonNoPadding>,
                         }
                       ];
                     return <Dropdown 

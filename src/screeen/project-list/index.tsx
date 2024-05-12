@@ -19,17 +19,19 @@ import { useSearchParams } from 'react-router-dom';
 import { useUrlQueryParam } from 'utils/url';
 import { useProjectSearchParams } from './util';
 import { ButtonNoPadding } from 'components/lib';
+import { useDispatch } from 'react-redux';
+import { projectListActions } from 'store/reduceSlice/project-list-slice';
 const apiUrl = process.env.REACT_APP_API_URL;
 
 console.log('apiUrl:::', apiUrl);
-export const ProjectScreenList = (props: { renderProjectBtn: JSX.Element}) => {
+export const ProjectScreenList = () => {
     // const [abc ,setParam] = useState({
     //     name: '',
     //     personId: ''
     // })
     // const [param, setParam] = useUrlQueryParam(['name', 'personId']);
     // const projectParams = {...param, personId: Number(param.personId)}
-
+    const dispatch = useDispatch();
     const [param, setParam] = useProjectSearchParams();
     const debounceValue = useDebounce(param, 600);
     const {isLoading, error, data: list, retry } = useProject(debounceValue);
@@ -40,9 +42,12 @@ export const ProjectScreenList = (props: { renderProjectBtn: JSX.Element}) => {
         <Container>
             <Row between={true}>
                 <h1>项目列表</h1>
-                {
-                    props.renderProjectBtn
-                }
+                <ButtonNoPadding 
+                    type="link" 
+                    onClick={() => dispatch(projectListActions.opennProjectModal())}
+                >
+                    新建项目
+                </ButtonNoPadding>
             </Row>
             
             <SearchPanel
@@ -52,7 +57,6 @@ export const ProjectScreenList = (props: { renderProjectBtn: JSX.Element}) => {
             />
             {error ? <Typography.Text type="danger">{error.message}</Typography.Text> : null}
             <ProjectList 
-                renderProjectBtn={props.renderProjectBtn}
                 dataSource={list || []}
                 loading={isLoading}
                 users={users || []}
