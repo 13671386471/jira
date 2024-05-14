@@ -7,6 +7,7 @@ import { User } from "./search-panel";
 import { Pin } from "components/pin";
 import { useProjectEdit } from "utils/project";
 import { ButtonNoPadding } from "components/lib";
+import { useProjectsModal } from "./util";
 export interface Project{
     id: number,
     name: string,
@@ -19,10 +20,10 @@ interface ProjectListProp extends TableProps<Project> {
     // list: Project[],
     users: User[],
     refresh?: () => void,
-    renderProjectBtn: JSX.Element
 }
 
 export const ProjectList = ({users, ...tableProps}: ProjectListProp) => {
+    const { open } = useProjectsModal();
     const { mutate } = useProjectEdit();
     const pinProject = (id: number) => (pin: boolean) => {
         // 函数柯理化，减少参数传递的个数
@@ -90,7 +91,12 @@ export const ProjectList = ({users, ...tableProps}: ProjectListProp) => {
                     const items: MenuProps['items'] = [
                         {
                           key: '1',
-                          label: tableProps.renderProjectBtn,
+                          label: <ButtonNoPadding 
+                                    type="link" 
+                                    onClick={() => open()}
+                                >
+                                    新建项目
+                                </ButtonNoPadding>,
                         }
                       ];
                     return <Dropdown 
