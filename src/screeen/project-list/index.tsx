@@ -10,7 +10,7 @@ import { clearnObject, useMount, useDebounce } from "utils";
 import { useHttp } from "utils/http";
 import { useAuth } from 'context/auth-context';
 import { useAsync } from 'utils/use-async';
-import { useProject } from 'utils/project';
+import { useProjects } from 'utils/project';
 import { useUsers } from 'utils/user';
 // import { logout } from 'auth-provider'; // 和从useAuth中导出的logout函数进行区分，为什么这个直接导入的函数不能触发登出
 import { useDocumentTitle } from 'utils';
@@ -26,7 +26,7 @@ export const ProjectScreenList = () => {
     const { open } = useProjectsModal();
     const [param, setParam] = useProjectSearchParams();
     const debounceValue = useDebounce(param, 600);
-    const {isLoading, error, data: list } = useProject(debounceValue);
+    const {isLoading, error, data: list } = useProjects(debounceValue);
     const {data: users} = useUsers();
     useDocumentTitle('项目列表', false);
     console.log('searchParams:', param)

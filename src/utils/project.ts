@@ -5,7 +5,7 @@ import { useAsync } from "./use-async";
 import { clearnObject, useMount, useDebounce } from "utils";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 
-export const useProject = (param: Partial<Project>) => {
+export const useProjects = (param: Partial<Project>) => {
     const ajax = useHttp();
     return useQuery<Project[]>(['projects', param], () => ajax('projects', { data: param })  )
 }
@@ -32,6 +32,20 @@ export const useProjectAdd = () => {
         }),
         {
             onSuccess: () => queryClient.invalidateQueries('projects')
+        }
+    )
+}
+
+
+export const useProject= (id?: number) => {
+
+    const ajax = useHttp();
+    return useQuery<Project>(
+        ['project', 
+        {id}], 
+        () => ajax(`projects/${id}`), 
+        {
+            enabled: !!id
         }
     )
 }

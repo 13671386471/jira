@@ -1,10 +1,10 @@
 import { Button, Drawer } from "antd"
-import { useProject } from "utils/project"
+import { useProjects } from "utils/project"
 import { useProjectsModal } from "./util"
 
 
 export const ProjectModal = () => {
-    const {projectModalOpen, close} = useProjectsModal();
+    const {projectModalOpen, close, editingProject, isLoading} = useProjectsModal();
     return <Drawer
         open={projectModalOpen} 
         onClose={() => {close()}}

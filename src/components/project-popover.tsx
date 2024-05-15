@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { Divider, List, Popover, Typography } from "antd"
-import { useProject } from "utils/project"
+import { useProjects } from "utils/project"
 import { ButtonNoPadding } from "./lib";
 import { useProjectsModal } from "screeen/project-list/util";
 
@@ -8,7 +8,7 @@ import { useProjectsModal } from "screeen/project-list/util";
 
 export const ProjectPopover = () => {
     const { close, open } = useProjectsModal();
-    const {data: projects, isLoading} = useProject({});
+    const {data: projects, isLoading} = useProjects({});
     const pinProject = projects?.filter(project => project.pin);
     const content = <ContentContainer>
        <Typography.Text type="secondary">收藏项目</Typography.Text>
