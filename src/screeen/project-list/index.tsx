@@ -5,7 +5,7 @@ import styled from '@emotion/styled'
 // import { Helmet } from 'react-helmet';
 import { SearchPanel } from "./search-panel"
 import { Project, ProjectList } from "./list"
-import { Row } from 'components/lib';
+import { ErrorBox, Row } from 'components/lib';
 import { clearnObject, useMount, useDebounce } from "utils";
 import { useHttp } from "utils/http";
 import { useAuth } from 'context/auth-context';
@@ -26,7 +26,7 @@ export const ProjectScreenList = () => {
     const { open } = useProjectsModal();
     const [param, setParam] = useProjectSearchParams();
     const debounceValue = useDebounce(param, 600);
-    const {isLoading, error, data: list, retry } = useProject(debounceValue);
+    const {isLoading, error, data: list } = useProject(debounceValue);
     const {data: users} = useUsers();
     useDocumentTitle('项目列表', false);
     console.log('searchParams:', param)
@@ -47,12 +47,11 @@ export const ProjectScreenList = () => {
                 setParam={setParam}
                 users={users || []}
             />
-            {error ? <Typography.Text type="danger">{error.message}</Typography.Text> : null}
+            <ErrorBox error={error} />
             <ProjectList
                 dataSource={list || []}
                 loading={isLoading}
                 users={users || []}
-                refresh = { retry }
             />
         </Container>
     )

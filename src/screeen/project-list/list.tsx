@@ -24,10 +24,10 @@ interface ProjectListProp extends TableProps<Project> {
 
 export const ProjectList = ({users, ...tableProps}: ProjectListProp) => {
     const { open } = useProjectsModal();
-    const { mutate } = useProjectEdit();
+    const { mutate } = useProjectEdit();// hook返回的是一个普通函数mutate，这样就可以在组件内部调用了，而不是违反规则在组件内部调用hook，因为hook只能在顶部调用 -- 9-5
     const pinProject = (id: number) => (pin: boolean) => {
         // 函数柯理化，减少参数传递的个数
-        mutate({id, pin}).then(tableProps?.refresh)
+        mutate({id, pin})
     }
     return <Table
         pagination={false}
