@@ -23,11 +23,14 @@ interface ProjectListProp extends TableProps<Project> {
 }
 
 export const ProjectList = ({users, ...tableProps}: ProjectListProp) => {
-    const { open } = useProjectsModal();
+    const { startEdit } = useProjectsModal();
     const { mutate } = useProjectEdit();// hook返回的是一个普通函数mutate，这样就可以在组件内部调用了，而不是违反规则在组件内部调用hook，因为hook只能在顶部调用 -- 9-5
     const pinProject = (id: number) => (pin: boolean) => {
         // 函数柯理化，减少参数传递的个数
         mutate({id, pin})
+    }
+    const editProject = (id: number) => () => {
+        startEdit(id)
     }
     return <Table
         pagination={false}
@@ -92,12 +95,23 @@ export const ProjectList = ({users, ...tableProps}: ProjectListProp) => {
                         {
                           key: '1',
                           label: <ButtonNoPadding 
+                                    key={'edit'}
                                     type="link" 
-                                    onClick={() => open()}
+                                    onClick={editProject(record.id)}
                                 >
-                                    新建项目
+                                    编辑
                                 </ButtonNoPadding>,
-                        }
+                        },
+                        {
+                            key: '2',
+                            label: <ButtonNoPadding 
+                                    key={'delete'}
+                                    type="link" 
+                                    //   onClick={() => open()}
+                                  >
+                                      删除
+                                  </ButtonNoPadding>,
+                          }
                       ];
                     return <Dropdown 
                                 menu={{items}}

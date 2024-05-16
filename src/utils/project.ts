@@ -13,7 +13,7 @@ export const useProjects = (param: Partial<Project>) => {
 export const useProjectEdit = () => {
     const ajax = useHttp();
     const queryClient = useQueryClient();
-    return useMutation((params: Partial<Project>) => ajax(`projects/${params.id}`, {
+    return useMutation((params: Partial<Project>) => ajax(`projects/`, {
         method: 'PATCH',
         data: params
     }), {
@@ -26,7 +26,7 @@ export const useProjectAdd = () => {
     const queryClient = useQueryClient();
 
     return useMutation(
-        (params: Partial<Project>) => ajax(`projects/${params.id}`, {
+        (params: Partial<Project>) => ajax(`projects`, {
             method: 'POST',
             data: params
         }),
