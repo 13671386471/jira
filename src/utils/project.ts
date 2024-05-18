@@ -3,57 +3,49 @@ import { Project } from "screeen/project-list/list";
 import { useHttp } from "./http";
 import { useAsync } from "./use-async";
 import { clearnObject, useMount, useDebounce } from "utils";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { QueryKey, useMutation, useQuery, useQueryClient } from "react-query";
 import { useProjectSearchParams } from "screeen/project-list/util";
+import { useAddConfig, useConfig, useDeleteConfig, useEditConfig } from "./use-optimistic-options";
 
 export const useProjects = (param: Partial<Project>) => {
     const ajax = useHttp();
     return useQuery<Project[]>(['projects', param], () => ajax('projects', { data: param })  )
 }
 
-export const useProjectEdit = () => {
+export const useProjectEdit = (queryKey: QueryKey) => {
     const ajax = useHttp();
-    const queryClient = useQueryClient();
-    const [searchParams] = useProjectSearchParams();
-    const queryKey = ['projects', searchParams];
-    return useMutation((params: Partial<Project>) => ajax(`projects/${params.id}`, {
-        method: 'PATCH',
-        data: params
-    }), {
-        onSuccess: () => queryClient.invalidateQueries(queryKey),
-        async onMutate(target: Partial<Project>) {
-            // 缓存
-            const previousProjects = queryClient.getQueryData<Project[]>(queryKey);
-            if (previousProjects) {
-                queryClient.setQueryData(queryKey, (old?: Project[]) => {
-                    return old?.map(project => {
-                        return project.id === target.id 
-                                ? { ...project, ...target } : project
-                    }) || [];
-                })
+    return useMutation(
+        (params: Partial<Project>) => 
+            ajax(`projects/${params.id}`,{
+                method: 'PATCH',
+                data: params
             }
-            return { previousProjects }
-        },
-        onError(error, newData, context) {
-            if (context?.previousProjects) {
-                queryClient.setQueryData(queryKey, context.previousProjects)
-            }
-        }
-    })
+        ),
+        useEditConfig(queryKey)
+    )
 }
 
-export const useProjectAdd = () => {
+export const useProjectAdd = (queryKey: QueryKey) => {
     const ajax = useHttp();
-    const queryClient = useQueryClient();
 
     return useMutation(
         (params: Partial<Project>) => ajax(`projects`, {
             method: 'POST',
             data: params
         }),
-        {
-            onSuccess: () => queryClient.invalidateQueries('projects')
-        }
+        useAddConfig(queryKey)
+    )
+}
+
+export const useProjectDelete = (queryKey: QueryKey) => {
+    const ajax = useHttp();
+
+    return useMutation(
+        // 和 useDeleteConfig 中的target是对应的
+        ({id}: {id: number}) => ajax(`projects/${id}`, {
+            method: 'DELETE',
+        }),
+        useDeleteConfig(queryKey)
     )
 }
 

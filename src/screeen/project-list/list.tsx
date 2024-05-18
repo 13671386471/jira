@@ -1,13 +1,13 @@
-import { Dropdown, Table, TableProps, Button } from "antd";
+import { Dropdown, Table, TableProps, Button, Modal } from "antd";
 import type { MenuProps } from 'antd';
 import dayjs from "dayjs";
 //  
 import { Link } from "react-router-dom";
 import { User } from "./search-panel";
 import { Pin } from "components/pin";
-import { useProjectEdit } from "utils/project";
+import { useProjectDelete, useProjectEdit } from "utils/project";
 import { ButtonNoPadding } from "components/lib";
-import { useProjectsModal } from "./util";
+import { useProjectQueryKey, useProjectsModal } from "./util";
 export interface Project{
     id: number,
     name: string,
@@ -23,15 +23,13 @@ interface ProjectListProp extends TableProps<Project> {
 }
 
 export const ProjectList = ({users, ...tableProps}: ProjectListProp) => {
-    const { startEdit } = useProjectsModal();
-    const { mutate } = useProjectEdit();// hook返回的是一个普通函数mutate，这样就可以在组件内部调用了，而不是违反规则在组件内部调用hook，因为hook只能在顶部调用 -- 9-5
+    
+    const { mutate } = useProjectEdit(useProjectQueryKey());// hook返回的是一个普通函数mutate，这样就可以在组件内部调用了，而不是违反规则在组件内部调用hook，因为hook只能在顶部调用 -- 9-5
     const pinProject = (id: number) => (pin: boolean) => {
         // 函数柯理化，减少参数传递的个数
         mutate({id, pin})
     }
-    const editProject = (id: number) => () => {
-        startEdit(id)
-    }
+   
     return <Table
         pagination={false}
         columns={[
@@ -91,40 +89,63 @@ export const ProjectList = ({users, ...tableProps}: ProjectListProp) => {
             },
             {
                 render(text, record, index){
-                    const items: MenuProps['items'] = [
-                        {
-                          key: '1',
-                          label: <ButtonNoPadding 
-                                    key={'edit'}
-                                    type="link" 
-                                    onClick={editProject(record.id)}
-                                >
-                                    编辑
-                                </ButtonNoPadding>,
-                        },
-                        {
-                            key: '2',
-                            label: <ButtonNoPadding 
-                                    key={'delete'}
-                                    type="link" 
-                                    //   onClick={() => open()}
-                                  >
-                                      删除
-                                  </ButtonNoPadding>,
-                          }
-                      ];
-                    return <Dropdown 
-                                menu={{items}}
-                            >
-                                <ButtonNoPadding type="link">
-                                   ...
-                                </ButtonNoPadding>
-                                
-                            </Dropdown>
+                    return <More project={record}/>
                 }
             }
         ]}
         // dataSource={list}
         {...tableProps}
     />
+}
+
+
+const More = ({project}: {project: Project}) => {
+    const { startEdit } = useProjectsModal();
+    const editProject = (id: number) => () => {
+        startEdit(id)
+    }
+
+    const {mutate: deleteProject} = useProjectDelete(useProjectQueryKey());
+    const confirmDeleteProject = ({id}: {id: number}) => {
+        // 删除项目
+        Modal.confirm({
+            title: '确认删除项目吗？',
+            okText: '确认',
+            cancelText: '取消',
+            onOk() {
+                deleteProject({id})
+            }
+        })
+        
+    }
+    const items: MenuProps['items'] = [
+        {
+          key: '1',
+          label: <ButtonNoPadding 
+                    key={'edit'}
+                    type="link" 
+                    onClick={editProject(project.id)}
+                >
+                    编辑
+                </ButtonNoPadding>,
+        },
+        {
+            key: '2',
+            label: <ButtonNoPadding 
+                    key={'delete'}
+                    type="link" 
+                    onClick={() => confirmDeleteProject({id: project.id})}
+                  >
+                      删除
+                  </ButtonNoPadding>,
+          }
+      ];
+    return <Dropdown 
+                menu={{items}}
+            >
+                <ButtonNoPadding type="link">
+                   ...
+                </ButtonNoPadding>
+                
+            </Dropdown>
 }
