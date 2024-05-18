@@ -25,15 +25,18 @@ export const useProjectEdit = () => {
             // 缓存
             const previousProjects = queryClient.getQueryData<Project[]>(queryKey);
             if (previousProjects) {
-                queryClient.setQueryData('projects', (old?: Project[]) => {
-                    return old?.map(project => project.id === target.id ? { ...project, ...target } : project) || [];
+                queryClient.setQueryData(queryKey, (old?: Project[]) => {
+                    return old?.map(project => {
+                        return project.id === target.id 
+                                ? { ...project, ...target } : project
+                    }) || [];
                 })
             }
             return { previousProjects }
         },
         onError(error, newData, context) {
             if (context?.previousProjects) {
-                queryClient.setQueryData('projects', context.previousProjects)
+                queryClient.setQueryData(queryKey, context.previousProjects)
             }
         }
     })
