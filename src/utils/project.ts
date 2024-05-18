@@ -4,6 +4,7 @@ import { useHttp } from "./http";
 import { useAsync } from "./use-async";
 import { clearnObject, useMount, useDebounce } from "utils";
 import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useProjectSearchParams } from "screeen/project-list/util";
 
 export const useProjects = (param: Partial<Project>) => {
     const ajax = useHttp();
@@ -13,11 +14,28 @@ export const useProjects = (param: Partial<Project>) => {
 export const useProjectEdit = () => {
     const ajax = useHttp();
     const queryClient = useQueryClient();
-    return useMutation((params: Partial<Project>) => ajax(`projects/`, {
+    const [searchParams] = useProjectSearchParams();
+    const queryKey = ['projects', searchParams];
+    return useMutation((params: Partial<Project>) => ajax(`projects/${params.id}`, {
         method: 'PATCH',
         data: params
     }), {
-        onSuccess: () => queryClient.invalidateQueries('projects')
+        onSuccess: () => queryClient.invalidateQueries(queryKey),
+        async onMutate(target: Partial<Project>) {
+            // 缓存
+            const previousProjects = queryClient.getQueryData<Project[]>(queryKey);
+            if (previousProjects) {
+                queryClient.setQueryData('projects', (old?: Project[]) => {
+                    return old?.map(project => project.id === target.id ? { ...project, ...target } : project) || [];
+                })
+            }
+            return { previousProjects }
+        },
+        onError(error, newData, context) {
+            if (context?.previousProjects) {
+                queryClient.setQueryData('projects', context.previousProjects)
+            }
+        }
     })
 }
 
