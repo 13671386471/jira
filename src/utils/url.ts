@@ -1,6 +1,6 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { URLSearchParamsInit, useSearchParams } from "react-router-dom"
-import { clearnObject } from "utils";
+import { clearnObject, subset } from "utils/index";
 
 /**
  * 
@@ -9,22 +9,27 @@ import { clearnObject } from "utils";
  * 
  */
 export const useUrlQueryParam = <K extends string>(keys: K[]) => {
-    const [searchParam, setSearchParam] = useSearchParams();
+    const [searchParam] = useSearchParams();
+    const setSearchParam = useSetUrlSearchParam();
+    const [stateKeys] = useState(keys);
     console.log('searchParam::>', searchParam, Object.fromEntries(searchParam));
     return [
-        useMemo(() => {
-            return keys.reduce((prev: {[key in K]: string}, key: K) => {
+        useMemo(
+            // () => {
+            //     return keys.reduce((prev: {[key in K]: string}, key: K) => {
 
-                return {...prev, [key]: searchParam.get(key) || ''}
-            }, {} as {[key in K]: string})
-        }, [searchParam]), 
+            //         return {...prev, [key]: searchParam.get(key) || ''}
+            //     }, {} as {[key in K]: string})
+            // }, 
+            () =>
+                subset(Object.fromEntries(searchParam), stateKeys) as {
+                  [key in K]: string;
+                },
+            [searchParam, stateKeys]
+        ), 
                                     //因为不确定值是什么类型的
         (params: Partial<{[key in K]: unknown}>) => {
-            const o = clearnObject({
-                ...Object.fromEntries(searchParam),
-                ...params
-            }) as URLSearchParamsInit; 
-            return setSearchParam(o);
+            return setSearchParam(params);
         }
     ] as const;
 }
@@ -34,3 +39,14 @@ export const useUrlQueryParam = <K extends string>(keys: K[]) => {
 // const a = ['jack', 18, {genaral: 'man'}] as const;
 
 // const b = ['13'] as const;
+
+export const useSetUrlSearchParam = () => {
+    const [searchParam, setSearchParam] = useSearchParams();
+    return (params: {[key in string]: unknown}) => {
+        const o = clearnObject({
+            ...Object.fromEntries(searchParam),
+            ...params
+        }) as URLSearchParamsInit; 
+        return setSearchParam(o);
+    }
+}
