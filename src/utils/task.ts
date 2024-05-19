@@ -10,7 +10,7 @@ import { Kanban } from "types/kanban";
 import { Task } from "types/task";
 
 
-export const useTasks = (param: Partial<Task>) => {
+export const useTasks = (param?: Partial<Task>) => {
     const ajax = useHttp();
     return useQuery<Task[]>(
         ['tasks', param], 

@@ -9,7 +9,7 @@ import { useAddConfig, useConfig, useDeleteConfig, useEditConfig } from "./use-o
 import { Kanban } from "types/kanban";
 
 
-export const useKanbans = (param: Partial<Kanban>) => {
+export const useKanbans = (param?: Partial<Kanban>) => {
     const ajax = useHttp();
     return useQuery<Kanban[]>(
         ['kanbans', param], 
