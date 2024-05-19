@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { Routes, Route, Navigate } from 'react-router';
 import {Link, useParams} from 'react-router-dom'
 
+import { KanbanScreen } from 'screeen/kanban';
+
 
 export const ProjectScreen = () => {
     const {id} = useParams<{id: string}>()
@@ -13,7 +15,8 @@ export const ProjectScreen = () => {
             <Link to={'kanban'}>看板</Link>
             <Link to={'epic'}>任务组</Link>
             <Routes>
-                <Route path={'/kanban'} element={<div>kanban</div>}></Route>
+                <Route path={'/kanban'} element={<KanbanScreen />}></Route>
+                {/* <Route path={'/kanban'} element={<div>kanban</div>}></Route> */}
                 <Route path={'/epic'} element={<div>epic</div>}></Route>
                 <Route path="*" element={<Navigate to={'kanban'} replace={true} />} />
             </Routes>
