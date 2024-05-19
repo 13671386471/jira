@@ -6,6 +6,7 @@ import {http} from 'utils/http';
 import { useMount } from 'utils';
 import { useAsync } from 'utils/use-async';
 import { FullPageLoading, FullPageErrorFallback } from 'components/lib';
+import { useQueryClient } from 'react-query';
 
 interface AuthForm {
     username: string;
@@ -37,10 +38,14 @@ AuthContext.displayName = 'AuthContext';
 export const AuthProvider = ({children}: {children: React.ReactNode}) => {
     // const [user, setUse]= useState<User | null>(null);
     const {run, isIdle,isLoading, isError, setData: setUse, data: user, error} = useAsync<User | null>();
+    const queryClient = useQueryClient();
 
     const login = (form: AuthForm) => auth.login(form).then(user => setUse(user));
     const register = (form: AuthForm) => auth.register(form).then(setUse);// 上面(user => setUse(user))的简写
-    const logout = () => auth.logout().then(() => setUse(null));// 因为auth.logout()是async 函数，返回的是Promise<void>，所以这里需要用then()
+    const logout = () => auth.logout().then(() => {
+        setUse(null);
+        queryClient.clear();// 退出后把缓存清空，以免后续登陆的用户看到上一个用户的数据
+    });// 因为auth.logout()是async 函数，返回的是Promise<void>，所以这里需要用then()
     useMount(() => {
         // bootstrapUser().then(user => setUse(user));
         run(bootstrapUser());
