@@ -112,6 +112,8 @@ const PageHeaderRight = styled.div`
     justify-content: flex-end;
 `
 const Main = styled.main`
+    display: flex;
+    overflow: hidden;
     /* grid-area: main; // 可以把这里打开看看效果
     height: calc(100vh - 6rem); */
     /* background-color: #eee; */

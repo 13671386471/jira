@@ -5,6 +5,7 @@ import { useKanbanSearchParams, useProjectInUrl } from './util';
 import { KanbanColumn } from './kanban-column';
 import styled from '@emotion/styled';
 import { SearchPanel } from './search-panel';
+import { ScreenContainer } from 'components/lib';
 
 
 export const KanbanScreen = () => {
@@ -12,7 +13,7 @@ export const KanbanScreen = () => {
     useDocumentTitle('看板列表');
     const { data: currentProject} = useProjectInUrl();
     const { data: kanbans} = useKanbans(useKanbanSearchParams());
-    return <div>
+    return <ScreenContainer>
         <h1>{currentProject?.name}看板</h1>
         <SearchPanel />
         <ColuumnContainer>
@@ -23,13 +24,13 @@ export const KanbanScreen = () => {
             }
         </ColuumnContainer>
         
-    </div> 
+    </ScreenContainer> 
 
 
 }
 
 const ColuumnContainer = styled.div`
     display: flex;
-    overflow: hidden;
-    margin-right: 2rem;
+    flex: 1;// 占满剩余空间
+    overflow-x: scroll;
 `
