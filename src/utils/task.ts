@@ -8,6 +8,7 @@ import { useProjectSearchParams } from "screeen/project-list/util";
 import { useAddConfig, useConfig, useDeleteConfig, useEditConfig } from "./use-optimistic-options";
 import { Kanban } from "types/kanban";
 import { Task } from "types/task";
+import { TaskType } from "types/task-type";
 
 
 export const useTasks = (param?: Partial<Task>) => {
@@ -15,5 +16,17 @@ export const useTasks = (param?: Partial<Task>) => {
     return useQuery<Task[]>(
         ['tasks', param], 
         () => ajax('tasks', { data: param })  
+    )
+}
+
+export const useTaskAdd = (queryKey: QueryKey) => {
+    const ajax = useHttp();
+
+    return useMutation(
+        (params: Partial<Task>) => ajax(`tasks`, {
+            method: 'POST',
+            data: params
+        }),
+        useAddConfig(queryKey)
     )
 }

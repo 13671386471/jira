@@ -17,7 +17,7 @@ export const SearchPanel = () => {
             typeId: undefined
         })
     }
-    return <Row marginBottom={10} gap={true}>
+    return <Row marginBottom={2} gap={true}>
         <Input 
             style={{width: '20rem'}} 
             placeholder="任务名" 

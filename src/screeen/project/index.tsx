@@ -53,9 +53,12 @@ const Container = styled.div`
 
 const Aside = styled.aside`
     display: flex;
+    overflow: hidden;
     background-color: rgb(244, 245, 247);
 `
 
 const Main = styled.div`
     box-shadow: -5px 0 5px -5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    overflow: hidden;
 `

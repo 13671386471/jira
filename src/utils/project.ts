@@ -6,6 +6,7 @@ import { clearnObject, useMount, useDebounce } from "utils";
 import { QueryKey, useMutation, useQuery, useQueryClient } from "react-query";
 import { useProjectSearchParams } from "screeen/project-list/util";
 import { useAddConfig, useConfig, useDeleteConfig, useEditConfig } from "./use-optimistic-options";
+import { Kanban } from "types/kanban";
 
 export const useProjects = (param: Partial<Project>) => {
     const ajax = useHttp();
@@ -60,5 +61,18 @@ export const useProject= (id?: number) => {
         {
             enabled: !!id
         }
+    )
+}
+
+
+export const useKanbanAdd = (queryKey: QueryKey) => {
+    const ajax = useHttp();
+
+    return useMutation(
+        (params: Partial<Kanban>) => ajax(`kanbans`, {
+            method: 'POST',
+            data: params
+        }),
+        useAddConfig(queryKey)
     )
 }
