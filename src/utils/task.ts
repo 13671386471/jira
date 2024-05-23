@@ -30,3 +30,28 @@ export const useTaskAdd = (queryKey: QueryKey) => {
         useAddConfig(queryKey)
     )
 }
+
+export const useTask= (id?: number) => {
+
+    const ajax = useHttp();
+    return useQuery<Project>(
+        [ 'task', {id} ], 
+        () => ajax(`task/${id}`), 
+        {
+            enabled: !!id
+        }
+    )
+}
+
+export const useTaskEdit = (queryKey: QueryKey) => {
+    const ajax = useHttp();
+    return useMutation(
+        (params: Partial<Task>) => 
+            ajax(`tasks/${params.id}`,{
+                method: 'PATCH',
+                data: params
+            }
+        ),
+        useEditConfig(queryKey)
+    )
+}
