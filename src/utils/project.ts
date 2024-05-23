@@ -64,15 +64,3 @@ export const useProject= (id?: number) => {
     )
 }
 
-
-export const useKanbanAdd = (queryKey: QueryKey) => {
-    const ajax = useHttp();
-
-    return useMutation(
-        (params: Partial<Kanban>) => ajax(`kanbans`, {
-            method: 'POST',
-            data: params
-        }),
-        useAddConfig(queryKey)
-    )
-}

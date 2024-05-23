@@ -16,3 +16,28 @@ export const useKanbans = (param?: Partial<Kanban>) => {
         () => ajax('kanbans', { data: param })  
     )
 }
+
+
+export const useKanbanAdd = (queryKey: QueryKey) => {
+    const ajax = useHttp();
+
+    return useMutation(
+        (params: Partial<Kanban>) => ajax(`kanbans`, {
+            method: 'POST',
+            data: params
+        }),
+        useAddConfig(queryKey)
+    )
+}
+
+export const useKanbanDelete = (queryKey: QueryKey) => {
+    const ajax = useHttp();
+
+    return useMutation(
+        // 和 useDeleteConfig 中的target是对应的
+        ({id}: {id: number}) => ajax(`kanbans/${id}`, {
+            method: 'DELETE',
+        }),
+        useDeleteConfig(queryKey)
+    )
+}

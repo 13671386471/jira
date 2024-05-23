@@ -55,3 +55,15 @@ export const useTaskEdit = (queryKey: QueryKey) => {
         useEditConfig(queryKey)
     )
 }
+
+export const useTaskDelete = (queryKey: QueryKey) => {
+    const ajax = useHttp();
+
+    return useMutation(
+        // 和 useDeleteConfig 中的target是对应的
+        ({id}: {id: number}) => ajax(`tasks/${id}`, {
+            method: 'DELETE',
+        }),
+        useDeleteConfig(queryKey)
+    )
+}
